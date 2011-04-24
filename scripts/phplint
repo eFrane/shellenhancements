@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ "$1" -eq "" ]
+then;
+  dir=.
+else;
+  dir=$1
+fi
+
+for f in `find $dir -type f -name \*.php`
+do
+  syntax=`php -l $f`
+  if [ $? -gt 0 ]
+  then
+    echo $syntax
+    return 2
+  fi
+done
