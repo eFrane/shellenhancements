@@ -6,19 +6,24 @@
 # setting WIKI_LANG which defaults to English (en).
 
 import urllib, urllib2;
-import sys, os;
+import sys, os, json;
 
 if len(sys.argv) < 2:
-  print "Usage: wikilang keyword"
-  exit;
+  print "Usage:\n  wikilang keyword"
+  exit()
 else:
   keywords = '|'.join(sys.argv[1:])
   keywords = urllib.quote(keywords)
 
 lang = os.getenv('WIKI_LANG', 'en')
 
-url = "http://%s.wikipedia.org/w/api.php?redirect=1&action=query&titles=%s&format=jsonfm" % (lang, keywords)
-req = urllib2.Request(url, '', {'User-Agent':'wikilink/1.0'})
+url = "http://%s.wikipedia.org/w/api.php?redirect=1&action=query&titles=%s&prop=info&format=json&indexpageids" % (lang, keywords)
+req = urllib2.Request(url, '', {'User-Agent':'wikilink/1.0 (+http://meanderingsoul.com)'})
 
 res = urllib2.urlopen(req)
-print res.read()
+obj = json.loads(res.read())
+
+for n,v in obj['query']['pages'].iteritems():
+  page = obj['query']['pages'][n]['title']
+
+print "http://%s.wikipedia.org/wiki/%s" % (lang, page)
