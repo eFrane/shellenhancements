@@ -18,7 +18,7 @@ else:
 lang = os.getenv('WIKI_LANG', 'en')
 
 url = "http://%s.wikipedia.org/w/api.php?redirect=1&action=query&titles=%s&prop=info&format=json&indexpageids" % (lang, keywords)
-req = urllib2.Request(url, '', {'User-Agent':'wikilink/1.0 (+http://meanderingsoul.com)'})
+req = urllib2.Request(url, '', {'User-Agent':'wikilink/1.0 (+http://github.com/eFrane/shellenhancements)'})
 
 res = urllib2.urlopen(req)
 obj = json.loads(res.read())
