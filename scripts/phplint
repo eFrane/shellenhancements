@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" -eq "" ]
+if [ "$1" = "" ]
 then
   dir=.
 else
@@ -13,6 +13,6 @@ do
   if [ $? -gt 0 ]
   then
     echo $syntax
-    return 2
+    exit 2
   fi
 done
