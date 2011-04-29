@@ -20,3 +20,17 @@ else:
   else:
     data = sys.argv[1]
 
+data = data.replace('\n', ' ')
+
+seen = {}
+list = []
+for l in data:
+  if l in seen: continue
+  seen[l] = 1
+  list.append(l)
+
+liststr = ''
+for elem in list:
+  liststr += elem
+
+print 'Input string contains %d unique characters: \n\n%s ' % (len(list), liststr)
