@@ -1,0 +1,7 @@
+#! /usr/bin/env python
+# lc - letter count (similar to POSIX standard tool wc - word count)
+# counts unique letters from stdin or a text file and
+# outputs a list of the letters
+#
+
+print 'Not yet implemented.'
