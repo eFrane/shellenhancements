@@ -4,4 +4,19 @@
 # outputs a list of the letters
 #
 
-print 'Not yet implemented.'
+import sys, os, os.path
+
+if len(sys.argv) != 2:
+  data = sys.stdin.read()
+
+  if len(data) == 0:
+    print 'Usage: lc <String or Filename>'
+    exit(1)
+else:
+  if os.path.isfile(sys.argv[1]):
+    f = open(sys.argv[1])
+    data = f.read()
+    f.close()
+  else:
+    data = sys.argv[1]
+
