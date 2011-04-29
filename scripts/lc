@@ -4,21 +4,21 @@
 # outputs a list of the letters
 #
 
-import sys, os, os.path
+import sys, codecs, os.path
 
 if len(sys.argv) != 2:
-  data = sys.stdin.read()
+  data = unicode(sys.stdin.read(), 'utf-8')
 
   if len(data) == 0:
     print 'Usage: lc <String or Filename>'
     exit(1)
 else:
   if os.path.isfile(sys.argv[1]):
-    f = open(sys.argv[1])
+    f = codecs.open(sys.argv[1], 'r', 'utf-8')
     data = f.read()
     f.close()
   else:
-    data = sys.argv[1]
+    data = unicode(sys.argv[1], 'utf-8')
 
 data = data.replace('\n', ' ')
 
@@ -33,4 +33,4 @@ liststr = ''
 for elem in list:
   liststr += elem
 
-print 'Input string contains %d unique characters: \n\n%s ' % (len(list), liststr)
+print u'Input string contains %d unique characters: \n\n%s ' % (len(list), liststr)
