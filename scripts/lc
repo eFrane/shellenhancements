@@ -29,7 +29,7 @@ for l in data:
   seen[l] = 1
   list.append(l)
 
-liststr = ''
+liststr = u''
 for elem in list:
   liststr += elem
 
