@@ -1,0 +1,72 @@
+#! /usr/bin/env python
+# mdfile - generate markdown of input and paste this
+# into some small boiler plate html to create a standards compliant
+# html file
+
+import os, os.path, sys
+import markdown
+
+def error():
+  print 'Usage mdfile markdown.md [markdown.htm]'
+  quit(1)
+
+def get(title, markdown):
+  boilerplate = u"""
+  <!DOCTYPE html>
+  <html>
+   <head>
+    <title>%s</title>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8" />
+   </head>
+   <body>
+   %s
+   </body>
+  </html>
+  """
+  return boilerplate % (title, markdown)
+
+
+if (len(sys.argv) < 2):
+  error()
+else:
+  if (sys.stdin.isatty()):
+    indata = ""
+  else:
+    indata = sys.stdin.read()
+
+  if (len(indata) > 0 and len(sys.argv) == 2):
+    # have (piped) input, use parameter as output file
+    outfile = sys.argv[1]
+
+  if (len(indata) == 0 and len(sys.argv) == 2):
+    # no (piped) input, use parameter as input file,
+    # generate output filename
+    infile = sys.argv[1]
+    if (os.path.isfile(infile)):
+      outfile, ext = os.path.splitext(infile)
+      outfile += '.htm'
+      f = open(infile)
+      indata = f.read()
+      f.close()
+    else:
+      error()
+
+  if (len(indata) == 0 and len(sys.argv) == 3):
+    infile = sys.argv[1]
+    outfile = sys.argv[2]
+    if (os.path.isfile(infile)):
+      f = open(infile)
+      indata = f.read()
+      f.close()
+    else:
+      error()
+
+indata = unicode(indata, 'utf-8')
+md = markdown.markdown(indata)
+title = indata[0:indata.find('\n')]
+html = get(title, md)
+
+f = open(outfile, 'w')
+f.truncate()
+f.write(html.encode('utf-8'))
+f.close()

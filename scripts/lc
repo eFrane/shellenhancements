@@ -33,4 +33,4 @@ liststr = u''
 for elem in list:
   liststr += elem
 
-print u'Input string contains %d unique characters: \n\n%s ' % (len(list), liststr)
+print u'Input string contains a total of %d and %d unique characters: \n\n%s ' % (len(data), len(list), liststr)
