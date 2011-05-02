@@ -10,6 +10,9 @@ for a wikipedia page or counting the unique letters in a string.
 -  __lc__ counts the unique letters in an input string that can be
    either stdin, argument or text-file (both ascii and utf-8 encoded).
 
+-  __mdfile__ transforms markdown input into a standards compliant
+   HTML5 file.
+
 -  __phplint__ scans a given or the current directory and all
    subdirectories for php files and performs a syntax check on them.
    It aborts if it finds an error.
