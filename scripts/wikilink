@@ -26,4 +26,4 @@ obj = json.loads(res.read())
 for n,v in obj['query']['pages'].iteritems():
   page = obj['query']['pages'][n]['title']
 
-print "http://%s.wikipedia.org/wiki/%s" % (lang, page)
+print "http://%s.wikipedia.org/wiki/%s" % (lang, urllib.quote(page))
