@@ -140,6 +140,7 @@ def get(title, markdown):
               left: fullLeft,
               opacity: 1.0
             }, d);
+            $('#toc').css('z-index', 10);
           } else {
             $('#toc_flap').delay(2*d).css('text-align', 'right');
             $('#toc').delay(d).animate({
@@ -147,6 +148,7 @@ def get(title, markdown):
               left: lowLeft,
               opacity: 0.8
             }, d);
+            $('#toc').css('z-index', -10);
           }
         }
 
@@ -159,7 +161,7 @@ def get(title, markdown):
 
         $('#toc_content li').each(function(i) {
           $(this).click(function() {
-            $.scrollTo(headers[i]);
+            $.scrollTo(headers[i], 300);
           });
         });
       });
