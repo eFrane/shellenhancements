@@ -102,6 +102,7 @@ def get(title, markdown):
 
       #toc > li {
         padding-bottom: 2px;
+        cursor: pointer;
       }
 
       #toc_flap {
