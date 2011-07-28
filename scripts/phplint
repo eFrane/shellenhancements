@@ -10,9 +10,10 @@ fi
 for f in `find $dir -type f -name \*.php`
 do
   syntax=`php -l $f`
-  if [ $? -gt 0 ]
+  rv=$?
+  if [ $rv -gt 0 ]
   then
     echo $syntax
-    exit 2
+    exit $rv
   fi
 done
