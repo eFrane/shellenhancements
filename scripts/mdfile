@@ -37,8 +37,9 @@ def get(title, markdown):
         margin: auto;
         font-family: Helvetica, sans-serif;
         background-color: #f5f5dc;
-        border-left: 1px solid #b8860b;
-        border-right: 1px solid #b8860b;
+        border-left:   1px solid #b8860b;
+        border-right:  1px solid #b8860b;
+        border-bottom: 1px solid #b8860b;
         padding: 1.5em;
         z-index: 5;
       }
@@ -75,7 +76,7 @@ def get(title, markdown):
         text-align: justify;
       }
 
-      #content ul {
+      #content ul, ol {
         position: relative;
         left: 1.5em;
         padding: 1.2em 0 1.2em 0;
@@ -101,7 +102,7 @@ def get(title, markdown):
       }
 
       #toc_content {
-        background: #cecece;
+        background: #f5f5dc;
         width: 220px;
         float: left;
       }
@@ -119,6 +120,11 @@ def get(title, markdown):
         font-size: 1.2em;
         line-height: 1.4em;
         font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      #toc_content ul {
+        list-style-type: disc;
       }
 
       #toc_content li {
@@ -138,9 +144,28 @@ def get(title, markdown):
         filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
         font-size: 1.8em;
         margin: 0 auto 0 auto;
-        text-shadow: 0 1px 0 #cecece;
+        text-shadow: 1px 1px 1px #f5f5dc;
         font-weight: bold;
         font-variant: small-caps;
+      }
+
+      footer {
+        position: static;
+        bottom: 5px;
+        left: 0px;
+        width: 100%;
+        text-align: center;
+        font-size: 0.6em;
+        z-index: -100;
+      }
+
+      footer span {
+        margin: 5px;
+      }
+
+      .replaced_link a {
+        vertical-align: super;
+        font-size: 0.6em;
       }
     </style>
     <!-- jquery + waypoints -->
@@ -149,6 +174,25 @@ def get(title, markdown):
     </script>
     <script type="text/javascript">
       $(document).ready(function() {
+        var links_container = $('<div id="links"><h2>Links</h2><ol></ol></div>');
+        var i = 0;
+        $('#content a').each(function() {
+          i++;
+          $('ol', links_container).append('<li>'
+            +$(this).text()+' (<a href="'
+            +$(this).attr('href')+'">'
+            +$(this).attr('href')+'</a>)</li>');
+          var n = 'link-'+$(this).text().replace(/ /g, '-');
+          $('a', links_container).last().attr('name', n);
+
+          $(this).wrapAll('<span class="replaced_link">'+$(this).text()+' </span>');
+
+          $(this).text('['+i+']');
+          $(this).attr('href', '#'+n);
+        });
+
+        $('#content').append(links_container);
+
         $('#content :header').each(function() {
           var name, li;
           name = $(this).text().replace(/ /g, '-');
@@ -202,7 +246,9 @@ def get(title, markdown):
      %content%
     </div>
     <footer>
-     made with <a href="http://github.com/eFrane/shellextensions">mdfile</a>
+     <span>
+     made with <a href="http://github.com/eFrane/shellenhancements">mdfile</a>
+     </span>
     </footer>
    </body>
   </html>
