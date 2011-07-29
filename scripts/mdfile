@@ -9,7 +9,7 @@ import os, os.path, sys
 import markdown
 
 def error():
-  print 'Usage mdfile markdown.md [markdown.htm]'
+  print 'Usage mdfile markdown.md [markdown.html]'
   quit(1)
 
 def get(title, markdown):
@@ -31,15 +31,6 @@ def get(title, markdown):
           vertical-align: baseline;
       }
 
-/*      #toc {
-        position: fixed;
-        top: 2em;
-        left: 2em;
-        width: 150px;
-        height: 70px;
-        display: none;
-      }*/
-
       #content {
         width: 75%;
         margin-top: 2em;
@@ -49,6 +40,7 @@ def get(title, markdown):
         border-left: 1px solid #b8860b;
         border-right: 1px solid #b8860b;
         padding: 1.5em;
+        z-index: 5;
       }
 
       #content h1, #content h2, #content h3,
@@ -91,23 +83,64 @@ def get(title, markdown):
 
       #toc {
         position: fixed;
-        padding: 10px;
         font-family: Helvetica, sans-serif;
         font-size: 0.8em;
-        background: #cecece;
         opacity: 0.8;
-        border-right: 1px solid #b8860b;
+        border-right:  1px solid #b8860b;
         border-bottom: 1px solid #b8860b;
+        border-top:    1px solid #b8860b;
+        top: 25px;
+        z-index: 1000;
+        background: #b8860b;
+        box-shadow: 2px 4px 4px #b8860b;
+        border-radius: 4px;
       }
 
-      #toc > li {
+      #toc:after {
+        clear: both;
+      }
+
+      #toc_content {
+        background: #cecece;
+        width: 220px;
+        float: left;
+      }
+
+      #toc_flap {
+        width: 30px;
+        float: right;
+      }
+
+      #toc .inner {
+        padding: 10px;
+      }
+
+      #toc_content span {
+        font-size: 1.2em;
+        line-height: 1.4em;
+        font-weight: bold;
+      }
+
+      #toc_content li {
         padding-bottom: 2px;
         cursor: pointer;
       }
 
-      #toc_flap {
-        padding-top: 5px;
+      #toc_content li:hover {
+        color: #b8860b;
+      }
+
+      #toc_flap .inner {
+        text-align: center;
+        vertical-align: center;
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+        font-size: 1.8em;
+        margin: 0 auto 0 auto;
+        text-shadow: 0 1px 0 #cecece;
         font-weight: bold;
+        font-variant: small-caps;
       }
     </style>
     <!-- jquery + waypoints -->
@@ -116,70 +149,61 @@ def get(title, markdown):
     </script>
     <script type="text/javascript">
       $(document).ready(function() {
-        // create table of contents
-
-        var headers = [];
-        var li;
-        $('h2, h3, h4, h5, h6').each(function() {
-          li = document.createElement('li');
-          li.innerHTML = $(this).html();
-          $('#toc_content > ul')[0].appendChild(li);
-          headers.push($(this).offset());
-        });
-
-        // calc lowTop, lowLeft ~ only displaying flap
-        var lowTop = fullTop = lowLeft = fullLeft = 0;
-        lowTop = -($('#toc').height() - $('#toc_flap').height()+5);
-        lowLeft = -($('#toc').width() - 110);
-
-        function toggleToc(show, d) {
-          if (show) {
-            $('#toc_flap').delay(2*d).css('text-align', 'left');
-            $('#toc').delay(d).animate({
-              top: fullTop,
-              left: fullLeft,
-              opacity: 1.0
-            }, d);
-            $('#toc').css('z-index', 10);
-          } else {
-            $('#toc_flap').delay(2*d).css('text-align', 'right');
-            $('#toc').delay(d).animate({
-              top: lowTop,
-              left: lowLeft,
-              opacity: 0.8
-            }, d);
-            $('#toc').css('z-index', -10);
-          }
-        }
-
-        toggleToc(false, 0);
-        $('#toc').hover(function() {
-          toggleToc(true, 300);
-        }, function() {
-          toggleToc(false, 300);
-        });
-
-        $('#toc_content li').each(function(i) {
-          $(this).click(function() {
-            $.scrollTo(headers[i], 300);
+        $('#content :header').each(function() {
+          var name, li;
+          name = $(this).text().replace(/ /g, '-');
+          li = $('<li>'+$(this).text()+'</li>');
+          $(li).click(function() {
+            document.location.hash = name;
           });
+
+          $('#toc_content ul').last().append(li);
+          $(this).wrapInner('<a name="'+name+'">');
+        });
+
+        $('#toc_flap').height($('#toc_content').height());
+
+        $('#toc').hover(function() {
+          $(this).animate({
+            opacity: 1.0,
+            left: 0
+          }, 500);
+        }, function() {
+          $(this).animate({
+            opacity: 0.25,
+            left: -$('#toc').outerWidth()+30
+          }, 500);
+        }).css({
+          opacity: 0.25,
+          left: -$('#toc').outerWidth()+30
         });
       });
     </script>
    </head>
    <body>
     <div id="toc">
+
      <div id="toc_content">
-      <ul>
-      </ul>
+      <div class="inner">
+       <span>table of contents</span>
+       <ul>
+       </ul>
+      </div>
      </div>
+
      <div id="toc_flap">
-      Table of Contents
+      <div class="inner">
+       toc
+      </div>
      </div>
+
     </div>
     <div id="content">
      %content%
     </div>
+    <footer>
+     made with <a href="http://github.com/eFrane/shellextensions">mdfile</a>
+    </footer>
    </body>
   </html>
   """
