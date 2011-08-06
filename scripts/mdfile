@@ -95,6 +95,7 @@ def get(title, markdown):
         background: #b8860b;
         box-shadow: 2px 4px 4px #b8860b;
         border-radius: 4px;
+        height: 150px;
       }
 
       #toc:after {
@@ -105,6 +106,8 @@ def get(title, markdown):
         background: #f5f5dc;
         width: 220px;
         float: left;
+        overflow-y: scroll;
+        height: 150px;
       }
 
       #toc_flap {
@@ -166,6 +169,17 @@ def get(title, markdown):
       .replaced_link a {
         vertical-align: super;
         font-size: 0.6em;
+      }
+
+      pre {
+        position: relative;
+        left: 1.5em;
+        padding: 1.2em 0 1.2em 0;
+      }
+
+      pre, code {
+        font-family: Courier New, monotype;
+        font-weight: 200;
       }
     </style>
     <!-- jquery + waypoints -->
